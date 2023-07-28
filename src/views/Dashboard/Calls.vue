@@ -252,11 +252,26 @@
 
 <script setup>
 import { storeToRefs } from 'pinia'
-import { onMounted, ref } from 'vue'
+import { onMounted,computed, ref } from 'vue'
 import { useCallsStore } from '../../stores/CallsStore'
 const callsStore = useCallsStore()
 const { loading, calls } = storeToRefs(callsStore)
 import { ArrowLongLeftIcon, ArrowLongRightIcon } from '@heroicons/vue/20/solid'
+
+const maxVisiblePages = ref(6); // Maximum number of pages to display before showing the ellipsis
+
+const paginatedPages = computed(() => {
+  const totalPages = callsStore.pagesSize.length; // Use the length of the pagesSize array
+
+  if (totalPages <= maxVisiblePages.value || totalPages <= 10) {
+    return callsStore.pagesSize; // Return the pagesSize array as-is
+  } else {
+    const firstPages = callsStore.pagesSize.slice(0, maxVisiblePages.value);  //pages to show before showing the ellipsis   - default 6 pages -
+    const lastPages = callsStore.pagesSize.slice(totalPages - 3); //pages to show after showing the ellipsis -default last 3 pages
+
+    return [...firstPages, '...', ...lastPages];
+  }
+});
 
 onMounted(() => {
   callsStore.get_calls(1)
