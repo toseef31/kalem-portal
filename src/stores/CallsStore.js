@@ -11,6 +11,8 @@ const { token, flashMessage } = storeToRefs(authenticationStore)
 export const useCallsStore = defineStore('calls', () => {
   const calls = ref({})
   const loading = ref(false)
+  const pagesSize = ref(0)
+
 
   function get_calls(page = 1, limit = 20) {
     loading.value = true
@@ -22,6 +24,7 @@ export const useCallsStore = defineStore('calls', () => {
       })
       .then((res) => {
         calls.value = res.data
+        pagesSize.value = Array.from({ length: Math.ceil(calls.value.total / calls.value.per_page) }, (_, index) => index + 1)
       })
       .catch((error) => {
         console.log(error)
