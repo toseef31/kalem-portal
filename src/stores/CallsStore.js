@@ -14,10 +14,17 @@ export const useCallsStore = defineStore('calls', () => {
   const pagesSize = ref(0)
 
 
-  function get_calls(page = 1, limit = 20) {
+  function get_calls({page = 1, limit = 20 , filters = {}} = {}) {
     loading.value = true
+    const queryString = new URLSearchParams({
+      page: String(page),
+      limit: String(limit),
+      // trashed: 'only',
+      ...filters,
+    }).toString();
+
     axiosInstance
-      .get('/api/call?page=' + page + '&limit=' + limit, {
+      .get('/api/call?' + queryString , {
         headers: {
           Authorization: 'Bearer ' + token.value
         }
