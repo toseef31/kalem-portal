@@ -174,7 +174,7 @@
     </div>
     <div>
       <nav class="flex items-center justify-between border-t border-gray-200 px-4 sm:px-0">
-        <div class="-mt-px flex w-0 flex-1">
+        <div class="mt-px flex w-0 flex-1">
           <a
             v-if="calls.current_page != 1"
             @click="callsStore.get_calls(calls.current_page - 1)"
@@ -185,58 +185,18 @@
             Previous
           </a>
         </div>
-        <div class="hidden md:-mt-px md:flex">
-          <!-- <a
-            v-if="calls.data && calls.data.length"
-            v-for="(page, index) in Math.ceil(calls.total / calls.per_page)"
-            :key="index"
-            @click="callsStore.get_calls(index + 1)"
-            href="#"
+        <div class="hidden md:-mt-px md:flex" v-if="calls.data && calls.data.length">
+          <a v-for="(currentPage) in paginatedPages" :key="currentPage" @click="callsStore.get_calls(currentPage)" href="#"
             :class="[
-              calls.current_page === index + 1
-                ? 'inline-flex items-center border-t-2 border-indigo-500 px-4 pt-4 text-sm font-medium text-indigo-600'
-                : 'inline-flex items-center border-t-2 border-transparent px-4 pt-4 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700'
-            ]"
-            >{{ index + 1 }}</a
-          > -->
-          <!-- Current: "border-indigo-500 text-indigo-600", Default: "border-transparent text-gray-500
-          hover:text-gray-700 hover:border-gray-300" -->
-          <!--
-          <a
-            href="#"
-            class="inline-flex items-center border-t-2 border-indigo-500 px-4 pt-4 text-sm font-medium text-indigo-600"
-            aria-current="page"
-            >2</a
-          >
-          <a
-            href="#"
-            class="inline-flex items-center border-t-2 border-transparent px-4 pt-4 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700"
-            >3</a
-          >
-          <span
-            class="inline-flex items-center border-t-2 border-transparent px-4 pt-4 text-sm font-medium text-gray-500"
-            >...</span
-          >
-          <a
-            href="#"
-            class="inline-flex items-center border-t-2 border-transparent px-4 pt-4 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700"
-            >8</a
-          >
-          <a
-            href="#"
-            class="inline-flex items-center border-t-2 border-transparent px-4 pt-4 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700"
-            >9</a
-          >
-          <a
-            href="#"
-            class="inline-flex items-center border-t-2 border-transparent px-4 pt-4 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700"
-            >10</a
-          >
-          -->
+                    calls.current_page === currentPage
+                      ? 'inline-flex items-center border-t-2 border-indigo-500 px-4 pt-4 text-sm font-medium text-indigo-600'
+                      : 'inline-flex items-center border-t-2 border-transparent px-4 pt-4 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700'
+                    ]"
+          >{{ currentPage }}</a>
         </div>
         <div class="-mt-px flex w-0 flex-1 justify-end">
           <a
-            v-if="calls.current_page < Math.ceil(calls.total / calls.per_page)"
+            v-if="calls.current_page < pagesSize.length"
             @click="callsStore.get_calls(calls.current_page + 1)"
             href="#"
             class="inline-flex items-center border-t-2 border-transparent pl-1 pt-4 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700"
@@ -255,16 +215,16 @@ import { storeToRefs } from 'pinia'
 import { onMounted,computed, ref } from 'vue'
 import { useCallsStore } from '../../stores/CallsStore'
 const callsStore = useCallsStore()
-const { loading, calls } = storeToRefs(callsStore)
+const { loading, calls, pagesSize } = storeToRefs(callsStore)
 import { ArrowLongLeftIcon, ArrowLongRightIcon } from '@heroicons/vue/20/solid'
 
 const maxVisiblePages = ref(6); // Maximum number of pages to display before showing the ellipsis
 
 const paginatedPages = computed(() => {
-  const totalPages = callsStore.pagesSize.length; // Use the length of the pagesSize array
+  const totalPages = pagesSize.value.length; // Use the length of the pagesSize array
 
   if (totalPages <= maxVisiblePages.value || totalPages <= 10) {
-    return callsStore.pagesSize; // Return the pagesSize array as-is
+    return pagesSize.value; // Return the pagesSize array as-is
   } else {
     const firstPages = callsStore.pagesSize.slice(0, maxVisiblePages.value);  //pages to show before showing the ellipsis   - default 6 pages -
     const lastPages = callsStore.pagesSize.slice(totalPages - 3); //pages to show after showing the ellipsis -default last 3 pages

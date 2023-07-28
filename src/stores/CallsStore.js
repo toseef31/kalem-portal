@@ -45,5 +45,5 @@ export const useCallsStore = defineStore('calls', () => {
       })
   }
 
-  return { calls, loading, get_calls }
+  return { calls, loading, get_calls, pagesSize }
 })
