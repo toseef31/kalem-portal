@@ -182,9 +182,9 @@
                     'relative whitespace-nowrap py-4 pr-4 pl-3 text-right text-sm font-medium sm:pr-8 lg:pr-8'
                   ]"
                 >
-                  <a href="#" class="text-indigo-600 hover:text-indigo-900"
-                    >Edit<span class="sr-only">, {{ call.call_id }}</span></a
-                  >
+                <TrashIcon class="text-red-500 w-5 hover:cursor-pointer hover:text-red-900"
+                  @click="openModel(call.call_id)"
+                 />
                 </td>
               </tr>
             </tbody>
@@ -228,6 +228,7 @@
       </nav>
     </div>
   </div>
+  <ModelVue ref="modalComponent"/>
 </template>
 
 <script setup>
@@ -236,7 +237,9 @@ import { onMounted,computed, ref } from 'vue'
 import { useCallsStore } from '../../stores/CallsStore'
 const callsStore = useCallsStore()
 const { loading, calls, pagesSize } = storeToRefs(callsStore)
-import { ArrowLongLeftIcon, ArrowLongRightIcon, MagnifyingGlassIcon } from '@heroicons/vue/20/solid'
+import { ArrowLongLeftIcon, ArrowLongRightIcon, MagnifyingGlassIcon, TrashIcon } from '@heroicons/vue/20/solid'
+import ModelVue from '../../components/Model.vue'
+
 
 //Refs
 
@@ -273,5 +276,9 @@ onMounted(() => {
 //Methods
 const handleSearch = () => {
   callsStore.get_calls({filters:searchFilters.value});
+}
+
+const openModel = (call_id)=>{
+  alert(call_id)
 }
 </script>
