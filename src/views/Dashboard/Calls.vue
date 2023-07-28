@@ -228,7 +228,7 @@
       </nav>
     </div>
   </div>
-  <ModelVue ref="modalComponent"/>
+  <ModelVue ref="modalComponent" @is-delete-confirmed="hello"/>
 </template>
 
 <script setup>
@@ -252,6 +252,11 @@ const searchFilters = ref({
   date_to: '',
   // Add more filter properties as needed
 });
+const userId = ref(null);
+const modalComponent = ref(null); // Create a ref to store the child component reference
+
+
+
 
 //Computed reactive properties
 const paginatedPages = computed(() => {
@@ -279,6 +284,11 @@ const handleSearch = () => {
 }
 
 const openModel = (call_id)=>{
-  alert(call_id)
+  modalComponent.value.showModel();
+  userId.value = call_id;
+}
+
+const hello = ()=>{
+  alert('here');
 }
 </script>
