@@ -228,7 +228,7 @@
       </nav>
     </div>
   </div>
-  <ModelVue ref="modalComponent" @is-delete-confirmed="hello"/>
+  <ModelVue ref="modalComponent" @is-delete-confirmed="callsStore.deleteCall(userId, calls.current_page)"/>
 </template>
 
 <script setup>
@@ -288,7 +288,4 @@ const openModel = (call_id)=>{
   userId.value = call_id;
 }
 
-const hello = ()=>{
-  alert('here');
-}
 </script>

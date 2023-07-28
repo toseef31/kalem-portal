@@ -52,5 +52,37 @@ export const useCallsStore = defineStore('calls', () => {
       })
   }
 
-  return { calls, loading, get_calls, pagesSize }
+  function deleteCall(callId, page_number) {
+    loading.value = true
+    axiosInstance
+      .delete('/api/call/' + callId ,{
+        headers: {
+          Authorization: 'Bearer ' + token.value
+        }
+      })
+      .then((res) => {
+        get_calls({page: page_number});
+        flashMessage.value = 'Record deleted successfully..'
+
+      })
+      .catch((error) => {
+        console.log(error)
+        if (error && error.response && error.response.status === 401) {
+          authenticationStore.logout
+        }
+        if (error.response && error.response.status == 404) {
+          router.push({
+            name: '404Resource',
+            params: { resource: 'calls' }
+          })
+        } else {
+          router.push({ name: 'NetworkError' })
+        }
+      })
+      .finally(() => {
+        loading.value = false
+      })
+  }
+
+  return { calls, loading, get_calls, pagesSize, deleteCall }
 })
