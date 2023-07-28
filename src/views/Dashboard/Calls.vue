@@ -269,7 +269,7 @@ const paginatedPages = computed(() => {
     const firstPages = callsStore.pagesSize.slice(0, maxVisiblePages.value);  //pages to show before showing the ellipsis   - default 6 pages -
     const lastPages = callsStore.pagesSize.slice(totalPages - 3); //pages to show after showing the ellipsis -default last 3 pages
 
-    return [...firstPages, '...', ...lastPages];
+    return [...firstPages, '...', ...lastPages]; // adding the ellipsis if pages are more than 10
   }
 });
 
