@@ -39,9 +39,34 @@
   import { ref, watchEffect } from 'vue'
   import { Dialog, DialogPanel, DialogTitle, TransitionChild, TransitionRoot } from '@headlessui/vue'
   import { ExclamationTriangleIcon } from '@heroicons/vue/24/outline'
+  import { useCallsStore } from '../stores/CallsStore'
+  import { storeToRefs } from 'pinia'
+  const callsStore = useCallsStore()
+  const { confirmDelete } = storeToRefs(callsStore)
 
+  const emit = defineEmits(['isDeleteConfirmed'])
   
-  const open = ref(true)
+  const open = ref(false)
 
+const showModel = () => {
+  open.value = true;
+}
+
+const closeModel = () => {
+  open.value = false;
+  confirmDelete.value = false;
+}
+
+const closeWithConfirmDel = () => {
+  open.value = false;
+  confirmDelete.value = true;
+  emit('isDeleteConfirmed');
+
+}
+
+
+defineExpose({
+  showModel,
+});
 
   </script>
