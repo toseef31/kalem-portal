@@ -197,7 +197,7 @@
         <div class="mt-px flex w-0 flex-1">
           <a
             v-if="calls.current_page != 1"
-            @click="callsStore.get_calls(calls.current_page - 1)"
+            @click="callsStore.get_calls({page:calls.current_page - 1})"
             href="#"
             class="inline-flex items-center border-t-2 border-transparent pr-1 pt-4 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700"
           >
@@ -206,7 +206,7 @@
           </a>
         </div>
         <div class="hidden md:-mt-px md:flex" v-if="calls.data && calls.data.length">
-          <a v-for="(currentPage) in paginatedPages" :key="currentPage" @click="callsStore.get_calls(currentPage)" href="#"
+          <a v-for="(currentPage) in paginatedPages" :key="currentPage" @click="callsStore.get_calls({page:currentPage})" href="#"
             :class="[
                     calls.current_page === currentPage
                       ? 'inline-flex items-center border-t-2 border-indigo-500 px-4 pt-4 text-sm font-medium text-indigo-600'
@@ -217,7 +217,7 @@
         <div class="-mt-px flex w-0 flex-1 justify-end">
           <a
             v-if="calls.current_page < pagesSize.length"
-            @click="callsStore.get_calls(calls.current_page + 1)"
+            @click="callsStore.get_calls({page:calls.current_page + 1})"
             href="#"
             class="inline-flex items-center border-t-2 border-transparent pl-1 pt-4 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700"
           >
@@ -266,12 +266,12 @@ const paginatedPages = computed(() => {
 
 // Hooks
 onMounted(() => {
-  callsStore.get_calls(1)
+  callsStore.get_calls()
   // v-for="(page, index) in Math.ceil(calls.total / calls.per_page)"
 })
 
 //Methods
 const handleSearch = () => {
-  
+  callsStore.get_calls({filters:searchFilters.value});
 }
 </script>
