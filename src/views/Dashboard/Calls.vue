@@ -1,7 +1,7 @@
 <template>
   <div class="px-4 sm:px-6 lg:px-8 overflow-auto">
-    <div class="sm:flex sm:items-center">
-      <div class="sm:flex-auto">
+    <div class="flex flex-wrap mt-1 items-center justify-between mb-4">
+      <div class="flex-row hidden md:block">
         <h1 class="text-base font-semibold leading-6 text-gray-900">Recent Calls</h1>
         <p class="mt-2 text-sm text-gray-700">A list of all the calls in your account.</p>
       </div>
@@ -98,7 +98,7 @@
                   scope="col"
                   class="sticky top-0 z-10 border-b border-gray-300 bg-white bg-opacity-75 py-3.5 pl-3 pr-4 backdrop-blur backdrop-filter sm:pr-6 lg:pr-8"
                 >
-                  <span class="sr-only">Edit</span>
+                  <span class="sr-only">Delete</span>
                 </th>
               </tr>
             </thead>
